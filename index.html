@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Metro Manila BPI Branches</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/PH_0_001_0.js"></script>
+        <script src="data/Dissolved_1.js"></script>
+        <script src="data/MM_2.js"></script>
+        <script src="data/BRANCHES_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:2
+        }).fitBounds([[14.367663215,120.6482788728125],[14.765629385,121.4193383271875]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        function pop_PH_0_001_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BRGY'] !== null ? autolinker.link(feature.properties['BRGY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CITY'] !== null ? autolinker.link(feature.properties['CITY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROV'] !== null ? autolinker.link(feature.properties['PROV'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RURBAN_TM'] !== null ? autolinker.link(feature.properties['RURBAN_TM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RURBAN_DIL'] !== null ? autolinker.link(feature.properties['RURBAN_DIL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_merge'] !== null ? autolinker.link(feature.properties['_merge'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PH_0_001_0_0() {
+            return {
+                pane: 'pane_PH_0_001_0',
+                opacity: 1,
+                color: 'rgba(239,239,239,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,239,239,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_PH_0_001_0');
+        map.getPane('pane_PH_0_001_0').style.zIndex = 400;
+        map.getPane('pane_PH_0_001_0').style['mix-blend-mode'] = 'normal';
+        var layer_PH_0_001_0 = new L.geoJson(json_PH_0_001_0, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_PH_0_001_0',
+            layerName: 'layer_PH_0_001_0',
+            pane: 'pane_PH_0_001_0',
+            onEachFeature: pop_PH_0_001_0,
+            style: style_PH_0_001_0_0,
+        });
+        bounds_group.addLayer(layer_PH_0_001_0);
+        map.addLayer(layer_PH_0_001_0);
+        function pop_Dissolved_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BRGY'] !== null ? autolinker.link(feature.properties['BRGY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CITY'] !== null ? autolinker.link(feature.properties['CITY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROV'] !== null ? autolinker.link(feature.properties['PROV'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RURBAN_TM'] !== null ? autolinker.link(feature.properties['RURBAN_TM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RURBAN_DIL'] !== null ? autolinker.link(feature.properties['RURBAN_DIL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['_merge'] !== null ? autolinker.link(feature.properties['_merge'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Dissolved_1_0() {
+            return {
+                pane: 'pane_Dissolved_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(196,60,57,0.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Dissolved_1');
+        map.getPane('pane_Dissolved_1').style.zIndex = 401;
+        map.getPane('pane_Dissolved_1').style['mix-blend-mode'] = 'normal';
+        var layer_Dissolved_1 = new L.geoJson(json_Dissolved_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Dissolved_1',
+            layerName: 'layer_Dissolved_1',
+            pane: 'pane_Dissolved_1',
+            onEachFeature: pop_Dissolved_1,
+            style: style_Dissolved_1_0,
+        });
+        bounds_group.addLayer(layer_Dissolved_1);
+        map.addLayer(layer_Dissolved_1);
+        function pop_MM_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">BRGY</th>\
+                        <td>' + (feature.properties['BRGY'] !== null ? autolinker.link(feature.properties['BRGY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CITY</th>\
+                        <td>' + (feature.properties['CITY'] !== null ? autolinker.link(feature.properties['CITY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROV</th>\
+                        <td>' + (feature.properties['PROV'] !== null ? autolinker.link(feature.properties['PROV'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">REGION</th>\
+                        <td>' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RURBAN_TM</th>\
+                        <td>' + (feature.properties['RURBAN_TM'] !== null ? autolinker.link(feature.properties['RURBAN_TM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RURBAN_DIL</th>\
+                        <td>' + (feature.properties['RURBAN_DIL'] !== null ? autolinker.link(feature.properties['RURBAN_DIL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">_merge</th>\
+                        <td>' + (feature.properties['_merge'] !== null ? autolinker.link(feature.properties['_merge'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">DISTRICT</th>\
+                        <td>' + (feature.properties['DISTRICT'] !== null ? autolinker.link(feature.properties['DISTRICT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MM_2_0(feature) {
+            switch(String(feature.properties['DISTRICT'])) {
+                case 'EAST':
+                    return {
+                pane: 'pane_MM_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,193,249,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'NORTH':
+                    return {
+                pane: 'pane_MM_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,222,249,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SOUTH':
+                    return {
+                pane: 'pane_MM_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(252,246,189,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WEST':
+                    return {
+                pane: 'pane_MM_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(208,244,222,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_MM_2');
+        map.getPane('pane_MM_2').style.zIndex = 402;
+        map.getPane('pane_MM_2').style['mix-blend-mode'] = 'normal';
+        var layer_MM_2 = new L.geoJson(json_MM_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MM_2',
+            layerName: 'layer_MM_2',
+            pane: 'pane_MM_2',
+            onEachFeature: pop_MM_2,
+            style: style_MM_2_0,
+        });
+        bounds_group.addLayer(layer_MM_2);
+        map.addLayer(layer_MM_2);
+        function pop_BRANCHES_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Division</th>\
+                        <td>' + (feature.properties['Division'] !== null ? autolinker.link(feature.properties['Division'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Area</th>\
+                        <td>' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ABD</th>\
+                        <td>' + (feature.properties['ABD'] !== null ? autolinker.link(feature.properties['ABD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">AAO</th>\
+                        <td>' + (feature.properties['AAO'] !== null ? autolinker.link(feature.properties['AAO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LGU and Br</th>\
+                        <td>' + (feature.properties['LGU and Br'] !== null ? autolinker.link(feature.properties['LGU and Br'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Branches</th>\
+                        <td>' + (feature.properties['Branches'] !== null ? autolinker.link(feature.properties['Branches'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Longitude</th>\
+                        <td>' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Latitude</th>\
+                        <td>' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_BRANCHES_3_0() {
+            return {
+                pane: 'pane_BRANCHES_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(114,0,38,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,179,193,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_BRANCHES_3');
+        map.getPane('pane_BRANCHES_3').style.zIndex = 403;
+        map.getPane('pane_BRANCHES_3').style['mix-blend-mode'] = 'normal';
+        var layer_BRANCHES_3 = new L.geoJson(json_BRANCHES_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_BRANCHES_3',
+            layerName: 'layer_BRANCHES_3',
+            pane: 'pane_BRANCHES_3',
+            onEachFeature: pop_BRANCHES_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_BRANCHES_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_BRANCHES_3);
+        map.addLayer(layer_BRANCHES_3);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Metro Manila BPI Branches</h2>';
+            };
+            title.addTo(map);
+            var abstract = new L.Control({'position':'topright'});
+            abstract.onAdd = function (map) {
+                this._div = L.DomUtil.create('div',
+                'leaflet-control abstract');
+                this._div.id = 'abstract'
+
+                    abstract.show();
+                    return this._div;
+                };
+                abstract.show = function () {
+                    this._div.classList.remove("abstract");
+                    this._div.classList.add("abstractUncollapsed");
+                    this._div.innerHTML = 'This Map is intended for ADI\'s BB1 session only.';
+            };
+            abstract.addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
